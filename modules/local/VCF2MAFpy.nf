@@ -1,19 +1,22 @@
+#!/usr/bin/env nextflow
+
+params.center = "MSK"
+params.sequenceSource = "WXS"
+
 process VCF2MAFpy { 
     tag "${idTumor}_${idNormal}"
 
     input:
-	tuple val(idTumor),val(idNormal),path(combinedVCF)
-    tuple path(genomeFile), path(genomeIndex), path(genomeDict), path(vepCache)
+         tuple val(idTumor), val(idNormal), path(vcfFile), path center from params.center, path sequenceSource from params.sequenceSource
 
-	output:
-    // tuple path(somaticVCF), path(germlineVCF),val(idTumor),val(idNormal), path("${idTumor}_${idNormal}_phased.annotated.vcf.gz"),path("${idTumor}_${idNormal}_phased.annotated.vcf.gz.tbi"),  emit: Phasedout
-    tuple val(idTumor),val(idNormal), path("*.maf")
-	script:
 
+	  output:
+      tuple val(idTumor),val(idNormal), path("*.maf")
+
+
+    script:
     """
 
-
-
+    python3 ../../bin/vcf2maf.py --input-data ${vcfFiles} --output-directory ${mafFiles} --center ${center} --sequence-source ${sequenceSource} --tumor-id ${idTumor} --normal-id ${idNormal}
     """
-
 }
