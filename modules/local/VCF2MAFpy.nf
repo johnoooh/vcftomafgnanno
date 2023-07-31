@@ -11,7 +11,7 @@ process VCF2MAFpy {
 	script:
 
     """
-    touch ${idTumor}_${idNormal}.maf
+
 
 
     """
