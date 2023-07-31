@@ -1,23 +1,22 @@
-include { vcftomafpy }   from '../process/vcftomafpy'
-include { genomenavigator }   from '../process/genomenavigator'
-
-
+include { VCF2MAFpy }   from '../modules/local/VCF2MAFpy'
+include { genomenavigator }   from '../modules/local/genomenavigator'
 
 workflow vcf2maf_gn
 {
-	input:
-	tuple val(idTumor),val(idNormal),path(combinedVCF)
-    tuple path(genomeFile), path(genomeIndex), path(genomeDict), path(vepCache)
+	take:
+	    combinedFiles
+	
+    main:
 
-	main:
-	"""
-    
-    
-    
-    """
+        referenceMap = params.referenceMap
 
-
+        VCF2MAFpy(combinedFiles,
+        referenceMap.genomeFile,referenceMap.genomeIndex,referenceMap.genomeDict
+        )
+        
+        genomenavigator(VCF2MAFpy.out)
 	emit:
+        genomenavigator.out
 
 
 }

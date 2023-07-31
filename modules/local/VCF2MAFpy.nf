@@ -7,13 +7,16 @@ process VCF2MAFpy {
     tag "${idTumor}_${idNormal}"
 
     input:
-    tuple val(idTumor), val(idNormal), path(vcfFile), path center from params.center, path sequenceSource from params.sequenceSource
-    
-    output:
-    tuple path(mafFiles)
+         tuple val(idTumor), val(idNormal), path(vcfFile), path center from params.center, path sequenceSource from params.sequenceSource
+
+
+	  output:
+      tuple val(idTumor),val(idNormal), path("*.maf")
+
 
     script:
     """
+
     python3 ../../bin/vcf2maf.py --input-data ${vcfFiles} --output-directory ${mafFiles} --center ${center} --sequence-source ${sequenceSource} --tumor-id ${idTumor} --normal-id ${idNormal}
     """
 }
