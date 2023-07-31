@@ -7,10 +7,11 @@ process VCF2MAFpy {
 
 	output:
     // tuple path(somaticVCF), path(germlineVCF),val(idTumor),val(idNormal), path("${idTumor}_${idNormal}_phased.annotated.vcf.gz"),path("${idTumor}_${idNormal}_phased.annotated.vcf.gz.tbi"),  emit: Phasedout
-    tuple val(idTumor),val(idNormal), path("*sorted.vcf")
+    tuple val(idTumor),val(idNormal), path("*.maf")
 	script:
 
     """
+    touch ${idTumor}_${idNormal}.maf
 
 
     """
